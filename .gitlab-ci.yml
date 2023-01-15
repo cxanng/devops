@@ -18,10 +18,14 @@ build:
   stage: build
   script:
   - cd app
+  - docker-compose up --build -d
+  - docker ps -a
 
 test:
   stage: test
   script:
+  - node -v
+  - npm i
   - npm run test
 
 lint:
