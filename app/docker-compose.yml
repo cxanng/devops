@@ -1,0 +1,92 @@
+version: "3"
+
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    build:
+      dockerfile: Dockerfile
+      context: ./rabbitmq
+    expose:
+      - "5672"
+      - "15672"
+      - "8888"
+    ports:
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - backend
+      - api_gateway
+
+  orig: 
+    container_name: orig
+    depends_on:
+      - rabbitmq
+    build:
+      dockerfile: Dockerfile
+      context: ./ORIG
+    environment:
+      - AMQP_URL=amqp://rabbitmq:5672
+    expose:
+      - "8000"
+    networks:
+      - backend
+      - api_gateway
+    
+  imed:
+    container_name: imed
+    depends_on:
+      - rabbitmq
+    build: 
+      context: ./IMED
+      dockerfile: Dockerfile
+    environment:
+      - AMQP_URL=amqp://rabbitmq:5672
+    networks:
+      - backend
+  
+  obse:
+    container_name: obse
+    depends_on:
+      - rabbitmq
+    build: 
+      context: ./OBSE
+      dockerfile: Dockerfile
+    environment:
+      - AMQP_URL=amqp://rabbitmq:5672
+    volumes:
+      - "db:/usr/src/app/db"
+    networks:
+      - backend
+
+  httpserv:
+    container_name: httpserv
+    build:
+      context: ./HTTPSERV
+      dockerfile: Dockerfile
+    environment:
+      - AMQP_URL=amqp://rabbitmq:5672
+    volumes:
+      - "db:/usr/src/app/db"
+    networks:
+      - api_gateway
+    ports:
+      - "8081:8081"
+
+  api_gateway:
+    container_name: api_gateway
+    build:
+      dockerfile: Dockerfile
+      context: ./API_gateway
+    ports:
+      - "8083:8083"
+    networks:
+      - api_gateway
+
+networks:
+  backend:
+  api_gateway:
+
+volumes:
+  db:

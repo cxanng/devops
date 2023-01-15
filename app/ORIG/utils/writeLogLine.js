@@ -1,0 +1,1 @@
+module.exports.writeLogLine = (state, prevLog) => `${prevLog}${(new Date()).toISOString()}: ${state}\n`;

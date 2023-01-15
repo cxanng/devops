@@ -1,0 +1,40 @@
+image: docker
+
+workflow:
+  rules: 
+    - if: $CI_COMMIT_BRANCH == "project"
+
+before_script:
+  - docker info
+  - apk add --no-cache docker-compose
+  - apk add --update nodejs npm
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+  - cd app
+
+test:
+  stage: test
+  script:
+  - npm run test
+
+lint:
+  stage: test
+  script:
+  - node -v
+  - npm i
+  - npm run lint
+  allow_failure: true
+
+deploy_local:
+  stage: deploy
+  script:
+  - cd app
+  - docker-compose down -v
+  - docker-compose up -d

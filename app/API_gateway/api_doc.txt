@@ -1,0 +1,6 @@
+GET /messages
+PUT /state (payload: INIT / PAUSED / RUNNING / SHUTDOWN or { INIT / PAUSED / RUNNING / SHUTDOWN: true} )
+GET /state
+GET /run-log
+GET /node-statistic
+GET /queue-statistic

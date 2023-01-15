@@ -1,0 +1,27 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "devops project",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint . --ext .js",
+    "lint-and-fix": "eslint --fix --ext .js,.jsx ."
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/test_suites"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://course-gitlab.tuni.fi/compse140-2022-2023/cxanng.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^8.31.0",
+    "jest": "^29.3.1",
+    "supertest": "^6.3.3"
+  }
+}
